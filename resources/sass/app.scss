@@ -1,0 +1,26 @@
+// Fonts
+// @import url('https://fonts.googleapis.com/css?family=Nunito');
+@import url('https://fonts.googleapis.com/css?family=Raleway');
+@import url('https://fonts.googleapis.com/css2?family=Rowdies:wght@300&display=swap');
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+body {
+    width: 100vw;
+    height: 100vh;
+    // background: rgb(74, 175, 244);
+    // background: radial-gradient(circle, rgba(74, 175, 244, 1) 32%, rgba(74, 78, 244, 1) 100%);
+    background: rgb(0, 78, 146);
+    background: radial-gradient(circle, rgba(0, 78, 146, 1) 32%, rgba(0, 4, 40, 1) 100%);
+    font-family: 'Raleway', sans-serif;
+    color: #fff;
+}
+
+#headingmain {
+    font-family: 'Rowdies', cursive;
+    font-size: 3rem;
+}
