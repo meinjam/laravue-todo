@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-loading.fullscreen.lock="fullscreenLoading">
         <form @submit.prevent="createTodo">
             <div class="input-group mb-3 w-100">
                 <input
@@ -59,9 +59,9 @@
                     </svg>
                 </span>
 
-                <span class="todofont" :class="{ completde: todo.completed }">{{
-                    todo.todo
-                }}</span>
+                <span class="todofont" :class="{ completde: todo.completed }">
+                    {{ todo.todo }}
+                </span>
 
                 <span class="ml-auto">
                     <svg
@@ -188,13 +188,26 @@ export default {
             });
         }
     },
-    async created() {
-        const resp = await this.axios("get", "todo");
-        if (resp.status === 200) {
-            this.todos = resp.data;
-        } else {
-            this.e("Something went wrong for loading todos.");
-        }
+    mounted() {
+        axios
+            .get("todo")
+            .then(resp => {
+                this.todos = resp.data;
+            })
+            .catch(e => {
+                this.e("Something went wrong for loading todos.");
+            });
+        // this.fullscreenLoading = false;
+        this.$loading().close();
+    },
+    beforeCreate() {
+        // this.fullscreenLoading = true;
+        const loading = this.$loading({
+            lock: true,
+            text: "Loading, please wait",
+            spinner: "el-icon-loading",
+            background: "rgba(0, 0, 0, 0.7)"
+        });
     }
 };
 </script>
