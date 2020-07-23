@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Todo;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class TodoController extends Controller {
 
@@ -20,21 +19,19 @@ class TodoController extends Controller {
         ] );
 
         return Todo::create( [
-            'todo' => $request->todo,
-            'slug' => Str::slug( $request->todo ),
+            'todo'      => $request->todo,
+            'completed' => 0,
         ] );
     }
 
-    public function show( $id ) {
-        //
-    }
+    public function update( Request $request ) {
+        $this->validate( $request, [
+            'todo' => 'required',
+        ] );
 
-    public function edit( $id ) {
-        //
-    }
-
-    public function update( Request $request, $id ) {
-        //
+        return Todo::where( 'id', $request->id )->update( [
+            'todo' => $request->todo,
+        ] );
     }
 
     public function destroy( Request $request ) {
@@ -42,5 +39,25 @@ class TodoController extends Controller {
             'id' => 'required',
         ] );
         return Todo::where( 'id', $request->id )->delete();
+    }
+
+    public function markcomplete( Request $request ) {
+        $this->validate( $request, [
+            'id' => 'required',
+        ] );
+
+        return Todo::where( 'id', $request->id )->update( [
+            'completed' => 1,
+        ] );
+    }
+
+    public function markincomplete( Request $request ) {
+        $this->validate( $request, [
+            'id' => 'required',
+        ] );
+
+        return Todo::where( 'id', $request->id )->update( [
+            'completed' => 0,
+        ] );
     }
 }

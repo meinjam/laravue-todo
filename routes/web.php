@@ -7,9 +7,11 @@ Route::get( '/', function () {
 } );
 
 // Route::get( 'get_post/{id}', 'TodoController@edit' );
-// Route::post( 'edit_post', 'TodoController@update' );
 Route::resource( 'todo', 'TodoController' )->only( ['index', 'store'] );
+Route::post( 'edit_todo', 'TodoController@update' );
 Route::post( 'delete_todo', 'TodoController@destroy' );
+Route::post( 'markcomplete', 'TodoController@markcomplete' );
+Route::post( 'markincomplete', 'TodoController@markincomplete' );
 
 Auth::routes();
 

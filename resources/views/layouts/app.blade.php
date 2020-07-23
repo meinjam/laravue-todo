@@ -23,7 +23,8 @@
 
 <body>
 
-    <div id="app" class="w-100 h-100">
+    <div id="app" class="container py-5">
+    {{-- <div id="app" class="w-100 h-100"> --}}
         @yield('content')
     </div>
 

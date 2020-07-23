@@ -3658,6 +3658,23 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -3665,7 +3682,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       data: {
         todo: ""
       },
-      todos: []
+      todos: [],
+      updateTodo: {
+        id: "",
+        todo: ""
+      }
     };
   },
   methods: {
@@ -3679,29 +3700,61 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
         _this.data.todo = "";
       })["catch"](function (e) {
-        _this.e(e.response.data.errors.todo[0]);
+        _this.$message.error(e.response.data.errors.todo[0]); // this.e(e.response.data.errors.todo[0]);
+
+      });
+    },
+    toggleTodo: function toggleTodo(todo, i) {
+      todo.completed = !todo.completed;
+
+      if (todo.completed == true) {
+        axios__WEBPACK_IMPORTED_MODULE_1___default.a.post("markcomplete", todo);
+      }
+
+      if (todo.completed == false) {
+        axios__WEBPACK_IMPORTED_MODULE_1___default.a.post("markincomplete", todo);
+      }
+    },
+    editTodo: function editTodo(todo, i) {
+      var _this2 = this;
+
+      console.log(todo.id);
+      this.$prompt("Enter todo name", "Edit todo", {
+        confirmButtonText: "OK",
+        cancelButtonText: "Cancel",
+        inputValue: todo.todo
+      }).then(function (_ref) {
+        var value = _ref.value;
+        _this2.updateTodo.id = todo.id;
+        _this2.updateTodo.todo = value;
+        axios__WEBPACK_IMPORTED_MODULE_1___default.a.post("edit_todo", _this2.updateTodo).then(function (resp) {
+          _this2.s("Todo has been updated successfully!");
+
+          _this2.todos[i].todo = value;
+        });
       });
     },
     deleteTodo: function deleteTodo(todo, i) {
-      var _this2 = this;
+      var _this3 = this;
 
-      this.$confirm("Are you want to permanently delete this todo?", "Warning", {
+      this.$confirm("Are you sure?", "Warning", {
         confirmButtonText: "OK",
         cancelButtonText: "Cancel",
-        type: "error"
+        type: "error",
+        center: true
       }).then(function () {
         axios__WEBPACK_IMPORTED_MODULE_1___default.a.post("delete_todo", todo).then(function (resp) {
-          _this2.s("Todo has been deleted successfully!");
+          _this3.s("Todo has been deleted successfully!");
 
-          _this2.todos.splice(i, 1);
+          _this3.todos.splice(i, 1);
         })["catch"](function (e) {
-          _this2.swr();
+          _this3.swr();
         });
       });
     }
   },
   created: function created() {
-    var _this3 = this;
+    var _this4 = this;
 
     return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
       var resp;
@@ -3710,16 +3763,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           switch (_context.prev = _context.next) {
             case 0:
               _context.next = 2;
-              return _this3.axios("get", "todo");
+              return _this4.axios("get", "todo");
 
             case 2:
               resp = _context.sent;
 
               if (resp.status === 200) {
-                _this3.todos = resp.data;
-                console.log(_this3.todos);
+                _this4.todos = resp.data;
               } else {
-                _this3.e("Something went wrong for loading todos.");
+                _this4.e("Something went wrong for loading todos.");
               }
 
             case 4:
@@ -10018,7 +10070,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\nsvg[data-v-2bd14908] {\n  cursor: pointer;\n}\n.todofont[data-v-2bd14908] {\n  font-size: 1rem;\n  color: #000;\n}\n.completde[data-v-2bd14908] {\n  text-decoration: line-through;\n}\n", ""]);
+exports.push([module.i, "\nsvg[data-v-2bd14908] {\n    cursor: pointer;\n}\n.todofont[data-v-2bd14908] {\n    font-size: 1rem;\n    color: #000;\n}\n.completde[data-v-2bd14908] {\n    text-decoration: line-through;\n}\n", ""]);
 
 // exports
 
@@ -100979,7 +101031,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "w-50" }, [
+  return _c("div", [
     _c(
       "form",
       {
@@ -101047,6 +101099,11 @@ var render = function() {
                         fill: "none",
                         "stroke-linecap": "round",
                         "stroke-linejoin": "round"
+                      },
+                      on: {
+                        click: function($event) {
+                          return _vm.toggleTodo(todo, i)
+                        }
                       }
                     },
                     [
@@ -101074,6 +101131,11 @@ var render = function() {
                         fill: "none",
                         "stroke-linecap": "round",
                         "stroke-linejoin": "round"
+                      },
+                      on: {
+                        click: function($event) {
+                          return _vm.toggleTodo(todo, i)
+                        }
                       }
                     },
                     [
@@ -101110,6 +101172,11 @@ var render = function() {
                     fill: "none",
                     "stroke-linecap": "round",
                     "stroke-linejoin": "round"
+                  },
+                  on: {
+                    click: function($event) {
+                      return _vm.editTodo(todo, i)
+                    }
                   }
                 },
                 [
@@ -101198,7 +101265,7 @@ var staticRenderFns = [
       _c(
         "button",
         { staticClass: "btn btn-outline-success", attrs: { type: "submit" } },
-        [_vm._v("Add Todo")]
+        [_vm._v("\n                    Add Todo\n                ")]
       )
     ])
   }
