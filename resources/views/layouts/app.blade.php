@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>Laravel + Vue Js Todo App</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -19,12 +19,15 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link rel="shortcut icon" href="{{ asset('img/favicon.png') }}" type="image/x-icon">
 </head>
 
 <body>
 
+    <small class="copyright">made with ❤️ ️by <a href="https://meinjam.tk" target="_blank">inzam</a></small>
+
     <div id="app" class="container py-5">
-    {{-- <div id="app" class="w-100 h-100"> --}}
+        {{-- <div id="app" class="w-100 h-100"> --}}
         @yield('content')
     </div>
 
